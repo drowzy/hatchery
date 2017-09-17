@@ -25,8 +25,7 @@ defmodule Xen.Mixfile do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:erlsom, github: "willemdj/erlsom"},
-      {:xmlrpc, "~> 0.1"},
+      {:xmlrpc,  github: "ewildgoose/elixir-xml_rpc"},
       {:httpoison, "~> 0.13"}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},
