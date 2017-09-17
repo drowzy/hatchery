@@ -1,4 +1,4 @@
-defmodule Horde.Mixfile do
+defmodule Hatchery.Mixfile do
   use Mix.Project
 
   def project do
