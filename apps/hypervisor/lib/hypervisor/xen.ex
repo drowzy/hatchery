@@ -1,6 +1,6 @@
-defmodule Xen do
+defmodule Hypervisor.Xen do
   use GenServer
-  alias Xen.Session
+  alias Hypervisor.Xen.{Session, Rpc}
 
   def start_link(config) do
     GenServer.start_link(__MODULE__, config)
@@ -8,7 +8,7 @@ defmodule Xen do
 
   # Client API
   def init(config \\ []) do
-    {:ok, session} = Xen.Rpc.connect(config)
+    {:ok, session} = Rpc.connect(config)
     {:ok, session}
   end
 
@@ -22,13 +22,13 @@ defmodule Xen do
   # Server API
   def handle_call(:connect, _from, %Session{status: :connected} = state), do: {:reply, state, state}
   def handle_call(:connect, _from, %Session{} = state) do
-    res = {_, new_state} = Xen.Rpc.connect(state)
+    res = {_, new_state} = Rpc.connect(state)
 
     {:reply, res, new_state}
   end
 
   def handle_call({:call, method_name, params}, _from, state) do
-    res = Xen.Rpc.call(state, method_name, params)
+    res = Rpc.call(state, method_name, params)
 
     {:reply, res, state}
   end
@@ -36,7 +36,7 @@ defmodule Xen do
   def handle_cast(:disconnect, _from, %Session{status: :disconnected} = state),
     do: {:noreply, state}
   def handle_cast(:disconnect, _from, %Session{} = state) do
-    {_, new_state} = Xen.Rpc.disconnect(state)
+    {_, new_state} = Rpc.disconnect(state)
 
     {:noreply, new_state}
   end

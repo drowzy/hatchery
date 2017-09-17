@@ -1,6 +1,8 @@
-defmodule Xen.Rpc do
+defmodule Hypervisor.Xen.Rpc do
+  alias Hypervisor.Xen.Session
+
   def connect(config \\ []) do
-    session = Xen.Session.new(config)
+    session = Session.new(config)
 
     req_body = encode("session.login_with_password", [session.username, session.password])
 
@@ -12,7 +14,7 @@ defmodule Xen.Rpc do
     end
   end
 
-  def disconnect(%Xen.Session{session_id: session_id, url: url} = session) do
+  def disconnect(%Session{session_id: session_id, url: url} = session) do
     req_body = encode("session.logout", [session_id])
 
     case request(url, req_body) do
@@ -21,11 +23,11 @@ defmodule Xen.Rpc do
     end
   end
 
-  def import(%Xen.Session{session_id: session_id, url: url}, file_path) do
+  def import(%Session{session_id: session_id, url: url}, file_path) do
 
   end
 
-  def call(%Xen.Session{session_id: session_id, url: url}, method_name, params \\ []) do
+  def call(%Session{session_id: session_id, url: url}, method_name, params \\ []) do
     req_body = encode(method_name, [session_id] ++ params)
 
     request(url, req_body)

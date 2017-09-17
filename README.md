@@ -1,3 +1,3 @@
 # Horde
 
-On demand unikernels on Xen hypervisors.
+On demand unikernels & containers.

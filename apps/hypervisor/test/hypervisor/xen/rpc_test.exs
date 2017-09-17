@@ -1,9 +1,10 @@
-defmodule Xen.RpcTest do
+defmodule Hypervisor.Xen.RpcTest do
   use ExUnit.Case, async: true
+  alias Hypervisor.Xen.{Session, Rpc}
 
   setup do
     bypass = Bypass.open
-    session = %Xen.Session{
+    session = %Session{
       url: endpoint_url(bypass.port),
       session_id: "foo",
       status: :connected
@@ -20,7 +21,7 @@ defmodule Xen.RpcTest do
       Plug.Conn.resp(conn, 200, @conn_success)
     end
 
-    {:ok, %Xen.Session{status: status}} = Xen.Rpc.connect(url: endpoint_url(bypass.port), username: "test", password: "test")
+    {:ok, %Session{status: status}} = Rpc.connect(url: endpoint_url(bypass.port), username: "test", password: "test")
     assert status == :connected
   end
 
@@ -29,7 +30,7 @@ defmodule Xen.RpcTest do
       Plug.Conn.resp(conn, 200, @conn_failure)
     end
 
-    assert {:error, _} = Xen.Rpc.connect(url: endpoint_url(bypass.port), username: "test", password: "test")
+    assert {:error, _} = Rpc.connect(url: endpoint_url(bypass.port), username: "test", password: "test")
   end
 
   test "disconnect sets the status to disconnected", %{bypass: bypass, session: session} do
@@ -37,7 +38,7 @@ defmodule Xen.RpcTest do
       Plug.Conn.resp(conn, 200, @conn_success)
     end
 
-    assert {:ok, %Xen.Session{status: :disconnected}} = Xen.Rpc.disconnect(session)
+    assert {:ok, %Session{status: :disconnected}} = Rpc.disconnect(session)
   end
 
   test "`call` sends the requested method", %{bypass: bypass, session: session} do
@@ -45,7 +46,7 @@ defmodule Xen.RpcTest do
       Plug.Conn.resp(conn, 200, @conn_success)
     end
 
-    assert {:ok, _} = Xen.Rpc.call(session, "task.create", ["name", "description"])
+    assert {:ok, _} = Rpc.call(session, "task.create", ["name", "description"])
   end
 
   defp endpoint_url(port), do: "http://localhost:#{port}"
