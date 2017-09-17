@@ -21,6 +21,12 @@ defmodule Xen.Rpc do
     end
   end
 
+  def call(%Xen.XAPI{session_id: session_id, url: url}, method_name, params \\ []) do
+    req_body = encode(method_name, [session_id] ++ params)
+
+    request(url, req_body)
+  end
+
   defp request(url, req_body) do
     case HTTPoison.post(url, req_body) do
       {:ok, body} -> decode_body(body)
@@ -37,7 +43,7 @@ defmodule Xen.Rpc do
     end
   end
 
-  defp encode(method_name, params \\ []) do
+  defp encode(method_name, params) do
     %XMLRPC.MethodCall{
       method_name: method_name,
       params: params
