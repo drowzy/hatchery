@@ -1,4 +1,4 @@
-defmodule Xen.XAPI do
+defmodule Xen.Session do
   @default_url "http+unix://#{URI.encode_www_form("/var/xapi/xapi")}"
 
   defstruct url: nil,

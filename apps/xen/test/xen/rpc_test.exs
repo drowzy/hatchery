@@ -3,7 +3,7 @@ defmodule Xen.RpcTest do
 
   setup do
     bypass = Bypass.open
-    session = %Xen.XAPI{
+    session = %Xen.Session{
       url: endpoint_url(bypass.port),
       session_id: "foo",
       status: :connected
@@ -20,7 +20,7 @@ defmodule Xen.RpcTest do
       Plug.Conn.resp(conn, 200, @conn_success)
     end
 
-    {:ok, %Xen.XAPI{status: status}} = Xen.Rpc.connect(url: endpoint_url(bypass.port), username: "test", password: "test")
+    {:ok, %Xen.Session{status: status}} = Xen.Rpc.connect(url: endpoint_url(bypass.port), username: "test", password: "test")
     assert status == :connected
   end
 
@@ -37,7 +37,7 @@ defmodule Xen.RpcTest do
       Plug.Conn.resp(conn, 200, @conn_success)
     end
 
-    assert {:ok, %Xen.XAPI{status: :disconnected}} = Xen.Rpc.disconnect(session)
+    assert {:ok, %Xen.Session{status: :disconnected}} = Xen.Rpc.disconnect(session)
   end
 
   test "`call` sends the requested method", %{bypass: bypass, session: session} do

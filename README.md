@@ -1,4 +1,3 @@
 # Horde
 
-**TODO: Add description**
-
+On demand unikernels on Xen hypervisors.
