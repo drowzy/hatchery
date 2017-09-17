@@ -24,7 +24,7 @@ defmodule Xen.Rpc do
   defp request(url, req_body) do
     case HTTPoison.post(url, req_body) do
       {:ok, body} -> decode_body(body)
-      {:error, reason} -> {:error, reason}
+      {:error, %HTTPoison.Error{reason: reason}} -> {:error, reason}
     end
   end
 

@@ -26,7 +26,8 @@ defmodule Xen.Mixfile do
   defp deps do
     [
       {:xmlrpc,  github: "ewildgoose/elixir-xml_rpc"},
-      {:httpoison, "~> 0.13"}
+      {:httpoison, "~> 0.13"},
+      {:bypass, "~> 0.8", only: :test}
       # {:dep_from_hexpm, "~> 0.3.0"},
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"},
       # {:sibling_app_in_umbrella, in_umbrella: true},
